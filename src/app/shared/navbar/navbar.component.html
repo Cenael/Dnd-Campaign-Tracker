@@ -1,0 +1,35 @@
+<nav class="navbar">
+  <div class="nav-left">
+    @if (showBackButton) {
+      <button class="btn-back" (click)="goBack()" title="Torna indietro">
+        <span class="arrow">←</span>
+      </button>
+    }
+    <a [routerLink]="['/']" class="logo">
+      <span class="dragon-icon">🐉</span>
+      D&D Tracker
+    </a>
+  </div>
+
+  <div class="nav-center">
+    @if (user()) {
+      <a [routerLink]="['/']" class="nav-link">Home</a>
+      <a [routerLink]="['/campagne']" class="nav-link">Campagne</a>
+      <a [routerLink]="['/profilo']" class="nav-link">Profilo</a>
+    }
+  </div>
+
+  <div class="nav-right">
+    @if (user()) {
+      <span class="user-info">
+        <span class="role-badge" [class.gm]="user()?.ruolo === 'GM'">
+          {{ user()?.ruolo }}
+        </span>
+        {{ user()?.nome }}
+      </span>
+      <button class="btn-logout" (click)="logout()">Logout</button>
+    } @else {
+      <a [routerLink]="['/login']" class="btn-login">Login</a>
+    }
+  </div>
+</nav>

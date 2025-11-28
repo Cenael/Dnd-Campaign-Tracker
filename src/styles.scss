@@ -1,1 +1,228 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles - D&D Tracker */
+
+// Color Palette - Fantasy Dark Theme
+$primary-bg: #0f0e17;
+$secondary-bg: #1a1a2e;
+$tertiary-bg: #16213e;
+$card-bg: #1e2438;
+$gold: #c9a961;
+$gold-light: #d4b16e;
+$gold-dark: #b89854;
+$text-primary: #e0e0e0;
+$text-secondary: #a8a8a8;
+$border-color: rgba(201, 169, 97, 0.3);
+$error-color: #e74c3c;
+$success-color: #2ecc71;
+$gm-gradient: linear-gradient(135deg, #8b4513 0%, #d4a574 100%);
+$player-color: #5a3f7d;
+
+// Global Reset & Base Styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, $primary-bg 0%, $secondary-bg 100%);
+  background-attachment: fixed;
+  color: $text-primary;
+  min-height: 100vh;
+  line-height: 1.6;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23c9a961" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>'), default;
+}
+
+// Main container with padding for navbar
+#root,
+router-outlet + * {
+  padding-top: 80px;
+  min-height: calc(100vh - 80px);
+}
+
+// Container
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+// Cards
+.card {
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c9a961" stroke-width="2"><path d="M10 2L2 7l8 5 8-5-8-5z"/><path d="M2 17l8 5 8-5M2 12l8 5 8-5"/></svg>') 10 10, pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(201, 169, 97, 0.2);
+    border-color: rgba(201, 169, 97, 0.5);
+  }
+
+  h3 {
+    color: $gold;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+
+  p {
+    color: $text-secondary;
+    margin: 5px 0;
+  }
+}
+
+// Buttons
+button,
+.btn {
+  background: linear-gradient(135deg, $gold-dark 0%, $gold 100%);
+  color: $primary-bg;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c9a961" stroke-width="2"><path d="M10 2L2 7l8 5 8-5-8-5z"/><path d="M2 17l8 5 8-5M2 12l8 5 8-5"/></svg>') 10 10, pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(201, 169, 97, 0.4);
+    background: linear-gradient(135deg, $gold 0%, $gold-light 100%);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.btn-secondary {
+    background: transparent;
+    border: 1px solid $gold;
+    color: $gold;
+
+    &:hover:not(:disabled) {
+      background: rgba(201, 169, 97, 0.1);
+    }
+  }
+}
+
+// Forms
+form {
+  background: $card-bg;
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px solid $border-color;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+label {
+  display: block;
+  color: $gold;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  background: $tertiary-bg;
+  border: 1px solid $border-color;
+  border-radius: 5px;
+  color: $text-primary;
+  font-size: 14px;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $gold;
+    box-shadow: 0 0 0 2px rgba(201, 169, 97, 0.2);
+  }
+
+  &::placeholder {
+    color: $text-secondary;
+  }
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+// Links
+a {
+  color: $gold;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c9a961" stroke-width="2"><path d="M10 2L2 7l8 5 8-5-8-5z"/><path d="M2 17l8 5 8-5M2 12l8 5 8-5"/></svg>') 10 10, pointer;
+
+  &:hover {
+    color: $gold-light;
+  }
+}
+
+// Headers
+h1, h2, h3, h4, h5, h6 {
+  color: $gold;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+// Error messages
+.error {
+  color: $error-color;
+  font-size: 12px;
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+
+// Loading & Empty states
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: $text-secondary;
+  font-style: italic;
+}
+
+// Scrollbar styling
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $secondary-bg;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $gold-dark;
+  border-radius: 5px;
+
+  &:hover {
+    background: $gold;
+  }
+}
