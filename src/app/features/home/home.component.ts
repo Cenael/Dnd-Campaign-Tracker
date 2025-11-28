@@ -47,21 +47,31 @@ import { UserService, User } from '../../services/user.service';
         </div>
       </div>
 
-      <div class="actions-section">
-        <a [routerLink]="['/campagne']" class="action-button primary">
-          <span>🗺️</span>
-          <span>Tutte le Campagne</span>
-        </a>
-        <a [routerLink]="['/profilo']" class="action-button secondary">
-          <span>👤</span>
-          <span>Il Mio Profilo</span>
-        </a>
-      </div>
+      @if (user()) {
+        <div class="actions-section">
+          <a [routerLink]="['/campagne']" class="action-button primary">
+            <span>🗺️</span>
+            <span>Tutte le Campagne</span>
+          </a>
+          <a [routerLink]="['/profilo']" class="action-button secondary">
+            <span>👤</span>
+            <span>Il Mio Profilo</span>
+          </a>
+        </div>
 
-      @if (user()?.ruolo === 'GM') {
-        <div class="quick-action">
-          <a [routerLink]="['/nuova']" class="btn-create-campaign">
-            ✨ Crea Nuova Campagna
+        @if (user()?.ruolo === 'GM') {
+          <div class="quick-action">
+            <a [routerLink]="['/nuova']" class="btn-create-campaign">
+              ✨ Crea Nuova Campagna
+            </a>
+          </div>
+        }
+      } @else {
+        <div class="guest-actions">
+          <p class="guest-message">Effettua il login per accedere a tutte le funzionalità</p>
+          <a [routerLink]="['/login']" class="action-button primary">
+            <span>🔑</span>
+            <span>Accedi</span>
           </a>
         </div>
       }
@@ -77,10 +87,5 @@ export class HomeComponent {
     private router: Router
   ) {
     this.user = this.userService.currentUser;
-    
-    // Redirect al login se non autenticato
-    if (!this.user()) {
-      this.router.navigate(['/login']);
-    }
   }
 }
