@@ -1,0 +1,83 @@
+<div class="campagna-detail-container">
+  @if (campagna()) {
+    <div class="header">
+      <h1>⚔️ {{ campagna()!.nome }}</h1>
+      <p class="description">{{ campagna()!.descrizione }}</p>
+    </div>
+
+    <div class="main-content">
+      <div class="info-section">
+        <h3>📋 Informazioni Campagna</h3>
+        <div class="info-card">
+          <div class="info-item">
+            <span class="label">Stato:</span>
+            <span class="value">
+              @if (isGM()) {
+                <span class="badge gm-badge">Sei il Game Master</span>
+              } @else if (isJoined()) {
+                <span class="badge joined-badge">Partecipante</span>
+              } @else {
+                <span class="badge available-badge">Disponibile</span>
+              }
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="label">Giocatori iscritti:</span>
+            <span class="value">{{ campagna()!.giocatori.length }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-section">
+        @if (!isGM() && user()?.ruolo === 'Giocatore') {
+          @if (!isJoined()) {
+            <button class="btn-primary" (click)="joinCampagna()">
+              🎲 Unisciti alla Campagna
+            </button>
+          } @else {
+            <button class="btn-secondary" (click)="leaveCampagna()">
+              ❌ Lascia la Campagna
+            </button>
+          }
+        }
+      </div>
+
+      <div class="links-section">
+        <h3>🔗 Navigazione</h3>
+        <div class="link-cards">
+          <a [routerLink]="['/personaggi', campagnaId]" class="link-card">
+            <span class="icon">👥</span>
+            <span class="title">Personaggi</span>
+            <span class="subtitle">Visualizza i personaggi della campagna</span>
+          </a>
+          <a [routerLink]="['/aggiornamenti', campagnaId]" class="link-card">
+            <span class="icon">📜</span>
+            <span class="title">Aggiornamenti</span>
+            <span class="subtitle">Leggi gli ultimi eventi</span>
+          </a>
+        </div>
+
+        @if (isJoined() || isGM()) {
+          <div class="quick-actions">
+            <a [routerLink]="['/personaggi/nuovo', campagnaId]">
+              <button class="btn-primary">🗡️ Crea il tuo Personaggio</button>
+            </a>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="footer-actions">
+      <a [routerLink]="['/']">
+        <button class="btn-back">🏠 Torna alla Home</button>
+      </a>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <h2>Campagna non trovata</h2>
+      <a [routerLink]="['/']">
+        <button>Torna alla Home</button>
+      </a>
+    </div>
+  }
+</div>

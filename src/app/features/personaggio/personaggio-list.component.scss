@@ -1,0 +1,107 @@
+.personaggio-list-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #a8a8a8;
+    font-style: italic;
+    font-size: 18px;
+  }
+
+  .card {
+    background: #1e2438;
+    border: 1px solid rgba(201, 169, 97, 0.3);
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(201, 169, 97, 0.2);
+      border-color: rgba(201, 169, 97, 0.6);
+    }
+
+    h3 {
+      color: #c9a961;
+      margin-bottom: 12px;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &::before {
+        content: "🗡️";
+        font-size: 20px;
+      }
+    }
+
+    .character-info {
+      color: #e0e0e0;
+      margin-bottom: 15px;
+      line-height: 1.6;
+
+      .stat {
+        display: inline-block;
+        margin-right: 15px;
+        padding: 4px 10px;
+        background: rgba(201, 169, 97, 0.1);
+        border-radius: 4px;
+        font-size: 14px;
+      }
+    }
+
+    a {
+      color: #c9a961;
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid rgba(201, 169, 97, 0.5);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-block;
+
+      &:hover {
+        background: rgba(201, 169, 97, 0.2);
+        border-color: #c9a961;
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+
+    a {
+      text-decoration: none;
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 16px;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #c9a961;
+      color: #c9a961;
+
+      &:hover {
+        background: rgba(201, 169, 97, 0.1);
+      }
+    }
+  }
+}
