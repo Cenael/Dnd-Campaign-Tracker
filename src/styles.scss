@@ -1,20 +1,23 @@
-/* Global Styles - D&D Tracker */
+/* Global Styles - D&D Tracker - Elegant Fantasy Theme */
 
-// Color Palette - Fantasy Dark Theme
-$primary-bg: #0f0e17;
-$secondary-bg: #1a1a2e;
-$tertiary-bg: #16213e;
-$card-bg: #1e2438;
-$gold: #c9a961;
-$gold-light: #d4b16e;
-$gold-dark: #b89854;
-$text-primary: #e0e0e0;
-$text-secondary: #a8a8a8;
-$border-color: rgba(201, 169, 97, 0.3);
-$error-color: #e74c3c;
-$success-color: #2ecc71;
-$gm-gradient: linear-gradient(135deg, #8b4513 0%, #d4a574 100%);
-$player-color: #5a3f7d;
+// Color Palette - Warm Medieval Tones
+$primary-bg: #2d2419;
+$secondary-bg: #3d3226;
+$tertiary-bg: #4a3f2f;
+$card-bg: #3d3226;
+$parchment: #e8d5b7;
+$parchment-dark: #c9b998;
+$copper: #b87333;
+$bronze: #cd7f32;
+$burgundy: #a0522d;
+$stone: #8b8680;
+$text-primary: #f4e4c1;
+$text-secondary: #c9b998;
+$border-color: rgba(205, 127, 50, 0.4);
+$error-color: #d32f2f;
+$success-color: #388e3c;
+$gm-gradient: linear-gradient(135deg, #8b4513 0%, #cd7f32 50%, #b87333 100%);
+$player-color: #4a5568;
 
 // Global Reset & Base Styles
 * {
@@ -24,13 +27,46 @@ $player-color: #5a3f7d;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, $primary-bg 0%, $secondary-bg 100%);
-  background-attachment: fixed;
+  font-family: 'Cinzel', 'Georgia', serif;
+  font-size: 15px;
+  background: 
+    url('https://th.bing.com/th/id/R.eefb575b7596ece7ef8b9ff13cdd7570?rik=eW7hGcTb1oV9ow&pid=ImgRaw&r=0'),
+    linear-gradient(135deg, lighten($primary-bg, 10%) 0%, $secondary-bg 50%, $tertiary-bg 100%);
+  background-size: cover, auto;
+  background-position: center, center;
+  background-attachment: fixed, fixed;
+  background-blend-mode: soft-light;
   color: $text-primary;
   min-height: 100vh;
   line-height: 1.6;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23c9a961" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>'), default;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23cd7f32" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6M23 12h-6m-6 0H1"/></svg>'), default;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+  
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFElEQVQIW2NkYGD4z8DAwMgABQAAHQAEb+5VzwAAAABJRU5ErkJggg==');
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
 // Main container with padding for navbar
@@ -47,53 +83,98 @@ router-outlet + * {
   padding: 20px;
 }
 
-// Cards
+// Cards - Elegante pergamena
 .card {
-  background: $card-bg;
-  border: 1px solid $border-color;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  background: 
+    linear-gradient(135deg, rgba(232, 213, 183, 0.12) 0%, rgba(201, 185, 152, 0.18) 100%),
+    lighten($card-bg, 5%);
+  border: none;
+  border-left: 4px solid $copper;
+  border-right: 1px solid rgba(205, 127, 50, 0.3);
+  border-top: 2px solid rgba(205, 127, 50, 0.2);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+  border-radius: 0;
+  padding: 20px 24px;
+  margin-bottom: 18px;
+  box-shadow: 
+    -6px 6px 12px rgba(0, 0, 0, 0.4),
+    inset 2px 0 8px rgba(232, 213, 183, 0.15);
   transition: all 0.3s ease;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c9a961" stroke-width="2"><path d="M10 2L2 7l8 5 8-5-8-5z"/><path d="M2 17l8 5 8-5M2 12l8 5 8-5"/></svg>') 10 10, pointer;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23cd7f32" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6M23 12h-6m-6 0H1"/></svg>') 10 10, pointer;
+  position: relative;
+  clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%);
+  
+  &::before {
+    content: '✦';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 12px;
+    color: rgba(205, 127, 50, 0.4);
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(201, 169, 97, 0.2);
-    border-color: rgba(201, 169, 97, 0.5);
+    transform: translateX(-4px);
+    box-shadow: 
+      -10px 10px 20px rgba(205, 127, 50, 0.3),
+      inset 2px 0 12px rgba(232, 213, 183, 0.25);
+    border-left-color: lighten($copper, 10%);
   }
 
   h3 {
-    color: $gold;
+    color: $copper;
     margin-bottom: 10px;
     font-size: 20px;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    letter-spacing: 0.5px;
   }
 
   p {
     color: $text-secondary;
-    margin: 5px 0;
+    margin: 4px 0;
+    font-size: 14px;
+    line-height: 1.5;
   }
 }
 
-// Buttons
+// Buttons - Elegante medievale
 button,
 .btn {
-  background: linear-gradient(135deg, $gold-dark 0%, $gold 100%);
-  color: $primary-bg;
+  background: linear-gradient(160deg, $bronze 0%, $copper 40%, #8b5a2b 100%);
+  color: $parchment;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c9a961" stroke-width="2"><path d="M10 2L2 7l8 5 8-5-8-5z"/><path d="M2 17l8 5 8-5M2 12l8 5 8-5"/></svg>') 10 10, pointer;
+  border-left: 3px solid rgba(139, 69, 19, 0.9);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+  padding: 11px 22px;
+  border-radius: 0;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23cd7f32" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6M23 12h-6m-6 0H1"/></svg>') 10 10, pointer;
   font-weight: 600;
   font-size: 14px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  box-shadow: 
+    -4px 4px 8px rgba(0, 0, 0, 0.5),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  clip-path: polygon(0 0, 98% 0, 100% 8%, 100% 100%, 8% 100%, 0 92%);
 
   &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(201, 169, 97, 0.4);
-    background: linear-gradient(135deg, $gold 0%, $gold-light 100%);
+    transform: translateX(-2px) translateY(-2px);
+    box-shadow: 
+      -6px 6px 12px rgba(205, 127, 50, 0.5),
+      inset 1px 1px 0 rgba(255, 255, 255, 0.3);
+    background: linear-gradient(160deg, lighten($bronze, 8%) 0%, lighten($copper, 8%) 40%, #a06433 100%);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateX(1px) translateY(1px);
+    box-shadow: 
+      -2px 2px 4px rgba(0, 0, 0, 0.5),
+      inset 1px 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   &:disabled {
@@ -103,30 +184,55 @@ button,
 
   &.btn-secondary {
     background: transparent;
-    border: 1px solid $gold;
-    color: $gold;
+    border: 2px solid $bronze;
+    border-left: 3px solid $bronze;
+    color: $bronze;
+    box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.3);
 
     &:hover:not(:disabled) {
-      background: rgba(201, 169, 97, 0.1);
+      background: rgba(205, 127, 50, 0.15);
+      border-color: lighten($bronze, 12%);
+      color: lighten($bronze, 12%);
     }
   }
 }
 
-// Forms
+// Forms - Pergamena stile
 form {
-  background: $card-bg;
-  padding: 30px;
-  border-radius: 8px;
-  border: 1px solid $border-color;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  background: 
+    linear-gradient(135deg, rgba(232, 213, 183, 0.05) 0%, rgba(201, 185, 152, 0.08) 100%),
+    $card-bg;
+  padding: 32px;
+  border-radius: 4px;
+  border: 3px solid $border-color;
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(232, 213, 183, 0.1);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid rgba(205, 127, 50, 0.2);
+    border-radius: 2px;
+    pointer-events: none;
+  }
 }
 
 label {
   display: block;
-  color: $gold;
+  color: $bronze;
   font-weight: 600;
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 13px;
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 input[type="text"],
@@ -136,23 +242,32 @@ input[type="password"],
 textarea,
 select {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 20px;
-  background: $tertiary-bg;
-  border: 1px solid $border-color;
-  border-radius: 5px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  background: rgba(58, 47, 36, 0.6);
+  border: 2px solid rgba(205, 127, 50, 0.4);
+  border-radius: 0;
+  border-left: 3px solid rgba(205, 127, 50, 0.5);
   color: $text-primary;
-  font-size: 14px;
+  font-size: 13px;
   transition: all 0.3s ease;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+    -2px 2px 4px rgba(0, 0, 0, 0.3);
 
   &:focus {
     outline: none;
-    border-color: $gold;
-    box-shadow: 0 0 0 2px rgba(201, 169, 97, 0.2);
+    border-left-color: $bronze;
+    background: rgba(58, 47, 36, 0.8);
+    box-shadow: 
+      inset 0 2px 4px rgba(0, 0, 0, 0.4),
+      -3px 3px 8px rgba(205, 127, 50, 0.3);
   }
 
   &::placeholder {
-    color: $text-secondary;
+    color: rgba(184, 168, 138, 0.5);
+    font-style: italic;
+    font-size: 12px;
   }
 }
 
@@ -164,33 +279,58 @@ textarea {
 
 // Links
 a {
-  color: $gold;
+  color: $bronze;
   text-decoration: none;
-  transition: color 0.3s ease;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c9a961" stroke-width="2"><path d="M10 2L2 7l8 5 8-5-8-5z"/><path d="M2 17l8 5 8-5M2 12l8 5 8-5"/></svg>') 10 10, pointer;
+  transition: all 0.3s ease;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23cd7f32" stroke-width="2"><path d="M10 2L2 7l8 5 8-5-8-5z"/><path d="M2 17l8 5 8-5M2 12l8 5 8-5"/></svg>') 10 10, pointer;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-weight: 600;
 
   &:hover {
-    color: $gold-light;
+    color: lighten($bronze, 15%);
+    text-shadow: 0 0 8px rgba(205, 127, 50, 0.5);
   }
 }
 
-// Headers
+// Headers - Elegante medievale
 h1, h2, h3, h4, h5, h6 {
-  color: $gold;
+  color: $copper;
   margin-bottom: 15px;
   font-weight: 600;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 1px;
 }
 
 h1 {
-  font-size: 32px;
+  font-size: 34px;
   text-align: center;
   margin-bottom: 30px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(205, 127, 50, 0.3);
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: 20px;
+  
+  &::after {
+    content: '◆ ◆ ◆';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: rgba(205, 127, 50, 0.6);
+    letter-spacing: 10px;
+  }
 }
 
 h2 {
   font-size: 26px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  border-left: 4px solid $copper;
+  padding-left: 14px;
+  text-transform: uppercase;
 }
 
 // Error messages
@@ -209,20 +349,35 @@ h2 {
   font-style: italic;
 }
 
-// Scrollbar styling
+// Scrollbar styling - Bronzo medievale
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
   background: $secondary-bg;
+  border-left: 1px solid rgba(205, 127, 50, 0.3);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $gold-dark;
-  border-radius: 5px;
+  background: linear-gradient(to bottom, $bronze, $copper);
+  border-radius: 2px;
+  border: 1px solid rgba(139, 69, 19, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 
   &:hover {
-    background: $gold;
+    background: linear-gradient(to bottom, lighten($bronze, 10%), lighten($copper, 10%));
+  }
+}
+
+// Animazione scroll reveal
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

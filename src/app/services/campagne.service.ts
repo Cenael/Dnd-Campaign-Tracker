@@ -57,4 +57,13 @@ export class CampagneService {
       tap(() => this.loadCampagne())
     );
   }
+
+  // Elimina campagna (solo GM che l'ha creata)
+  deleteCampagna(campagnaId: number, gmId: number): Observable<any> {
+    return this.http.delete(`${this.API_URL}/${campagnaId}`, { 
+      body: { gmId } 
+    }).pipe(
+      tap(() => this.loadCampagne())
+    );
+  }
 }
