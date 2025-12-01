@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export type Role = 'GM' | 'Giocatore';
 
@@ -17,7 +18,7 @@ export interface User {
 })
 export class UserService {
   private readonly STORAGE_KEY = 'dnd_current_user';
-  private readonly API_URL = 'http://localhost:3000/api/users';
+  private readonly API_URL = `${environment.apiUrl}/users`;
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
 
