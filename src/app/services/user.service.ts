@@ -14,7 +14,7 @@ export interface User {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   private readonly STORAGE_KEY = 'dnd_current_user';
@@ -41,7 +41,7 @@ export class UserService {
   // Login o registrazione utente
   loginOrRegister(nome: string, ruolo: Role): Observable<User> {
     return this.http.post<User>(`${this.API_URL}/login`, { nome, ruolo }).pipe(
-      tap(user => {
+      tap((user) => {
         this.currentUser.set(user);
         if (this.isBrowser) {
           localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
