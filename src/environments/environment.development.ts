@@ -1,5 +1,5 @@
 // Environment per sviluppo locale
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api',
+  apiUrl: 'https://dndcampaigntracker-alpha.vercel.app/api',
 };
