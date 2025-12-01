@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Personaggio } from '../models/personaggio';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PersonaggiService {
-  private readonly API_URL = 'http://localhost:3000/api/personaggi';
+  private readonly API_URL = `${environment.apiUrl}/personaggi`;
 
   constructor(private http: HttpClient) {}
 
