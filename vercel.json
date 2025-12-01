@@ -1,6 +1,26 @@
 {
-  "framework": null,
-  "buildCommand": "npm install && ng build --configuration production",
-  "outputDirectory": "dist/dnd-tracker-lite/browser",
-  "installCommand": "npm install"
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/dnd-tracker-lite/browser"
+      }
+    },
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/dnd-tracker-lite/browser/$1"
+    }
+  ]
 }
