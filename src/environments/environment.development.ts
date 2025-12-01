@@ -1,5 +1,5 @@
 // Environment per sviluppo locale
 export const environment = {
   production: false,
-  apiUrl: 'https://dndcampaigntracker-alpha.vercel.app/api',
+  apiUrl: 'https://dndtracker-backend.onrender.com/api',
 };
