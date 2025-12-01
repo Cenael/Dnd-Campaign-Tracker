@@ -1,4 +1,6 @@
 {
-  "buildCommand": "ng build --configuration production",
-  "outputDirectory": "dist/dnd-tracker-lite/browser"
+  "framework": null,
+  "buildCommand": "npm install && ng build --configuration production",
+  "outputDirectory": "dist/dnd-tracker-lite/browser",
+  "installCommand": "npm install"
 }
