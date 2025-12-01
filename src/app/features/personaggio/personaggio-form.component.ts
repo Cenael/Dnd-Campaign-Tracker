@@ -13,7 +13,7 @@ import { DndApiService, DndClass, DndRace, DndLanguage, DndAlignment } from '../
   imports: [ReactiveFormsModule, CommonModule],
   template: `
     <div class="form-container">
-      <h2>🗡️ Creazione Personaggio D&D 5e</h2>
+      <h2>{{ isEditMode ? '✏️ Modifica Personaggio' : '🗡️ Creazione Personaggio D&D 5e' }}</h2>
 
       @if (loading()) {
         <p class="loading">⏳ Caricamento dati ufficiali D&D 5e...</p>
@@ -143,7 +143,7 @@ import { DndApiService, DndClass, DndRace, DndLanguage, DndAlignment } from '../
 
           <div class="form-actions">
             <button type="button" class="btn-cancel" (click)="goBack()">Annulla</button>
-            <button type="submit" [disabled]="personaggioForm.invalid || loading()">Crea Personaggio</button>
+            <button type="submit" [disabled]="personaggioForm.invalid || loading()">{{ isEditMode ? 'Salva Modifiche' : 'Crea Personaggio' }}</button>
           </div>
         </form>
       }
@@ -154,6 +154,8 @@ import { DndApiService, DndClass, DndRace, DndLanguage, DndAlignment } from '../
 export class PersonaggioFormComponent implements OnInit {
   personaggioForm;
   campagnaId: number;
+  personaggioId: number | null = null;
+  isEditMode = false;
 
   // Signals per dati D&D API
   loading = signal(true);
@@ -177,7 +179,13 @@ export class PersonaggioFormComponent implements OnInit {
     private userService: UserService,
     private dndApi: DndApiService
   ) {
-    this.campagnaId = Number(this.route.snapshot.paramMap.get('campagnaId'));
+    const campagnaIdParam = this.route.snapshot.paramMap.get('campagnaId');
+    const personaggioIdParam = this.route.snapshot.paramMap.get('id');
+    
+    this.campagnaId = campagnaIdParam ? Number(campagnaIdParam) : 0;
+    this.personaggioId = personaggioIdParam ? Number(personaggioIdParam) : null;
+    this.isEditMode = !!this.personaggioId;
+    
     this.personaggioForm = this.fb.group({
       nome: ['', Validators.required],
       classe: ['', Validators.required],
@@ -197,15 +205,63 @@ export class PersonaggioFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Carica dati D&D API
     this.dndApi.getCharacterCreationData().subscribe({
       next: (data) => {
         this.classes.set(data.classes);
         this.races.set(data.races);
         this.alignments.set(data.alignments);
         this.loading.set(false);
+        
+        // Se in modalità modifica, carica i dati del personaggio
+        if (this.isEditMode && this.personaggioId) {
+          this.loadPersonaggioData();
+        }
       },
       error: (err) => {
         console.error('Errore caricamento dati D&D:', err);
+        this.loading.set(false);
+      }
+    });
+  }
+
+  loadPersonaggioData() {
+    this.loading.set(true);
+    this.ps.getById(this.personaggioId!).subscribe({
+      next: (personaggio) => {
+        this.campagnaId = personaggio.campagnaId;
+        this.personaggioForm.patchValue({
+          nome: personaggio.nome,
+          classe: personaggio.classe,
+          razza: personaggio.razza,
+          livello: personaggio.livello,
+          strength: personaggio.abilityScores?.strength || 10,
+          dexterity: personaggio.abilityScores?.dexterity || 10,
+          constitution: personaggio.abilityScores?.constitution || 10,
+          intelligence: personaggio.abilityScores?.intelligence || 10,
+          wisdom: personaggio.abilityScores?.wisdom || 10,
+          charisma: personaggio.abilityScores?.charisma || 10,
+          allineamento: personaggio.allineamento || '',
+          background: personaggio.background || '',
+          linguaggi: Array.isArray(personaggio.linguaggi) ? personaggio.linguaggi.join(', ') : '',
+          note: personaggio.note || ''
+        });
+        
+        if (personaggio.avatar) {
+          this.avatarPreview.set(personaggio.avatar);
+          this.avatarBase64.set(personaggio.avatar);
+        }
+        
+        // Imposta la classe e razza selezionate
+        const selectedClass = this.classes().find(c => c.name === personaggio.classe);
+        const selectedRace = this.races().find(r => r.name === personaggio.razza);
+        if (selectedClass) this.selectedClass.set(selectedClass);
+        if (selectedRace) this.selectedRace.set(selectedRace);
+        
+        this.loading.set(false);
+      },
+      error: (err) => {
+        console.error('Errore caricamento personaggio:', err);
         this.loading.set(false);
       }
     });
@@ -296,7 +352,7 @@ export class PersonaggioFormComponent implements OnInit {
         charisma: formValue.charisma!
       };
 
-      const nuovoPersonaggio: Omit<Personaggio, 'id'> = {
+      const personaggioData: Omit<Personaggio, 'id'> = {
         nome: formValue.nome!,
         classe: formValue.classe!,
         razza: formValue.razza!,
@@ -317,10 +373,19 @@ export class PersonaggioFormComponent implements OnInit {
         avatar: this.avatarBase64() || undefined
       };
       
-      this.ps.addPersonaggio(nuovoPersonaggio).subscribe({
-        next: () => this.router.navigate(['/personaggi', this.campagnaId]),
-        error: (err) => console.error('Errore salvataggio personaggio:', err)
-      });
+      if (this.isEditMode && this.personaggioId) {
+        // Modalità modifica
+        this.ps.updatePersonaggio(this.personaggioId, personaggioData).subscribe({
+          next: () => this.router.navigate(['/personaggi', this.campagnaId]),
+          error: (err) => console.error('Errore modifica personaggio:', err)
+        });
+      } else {
+        // Modalità creazione
+        this.ps.addPersonaggio(personaggioData).subscribe({
+          next: () => this.router.navigate(['/personaggi', this.campagnaId]),
+          error: (err) => console.error('Errore salvataggio personaggio:', err)
+        });
+      }
     }
   }
 

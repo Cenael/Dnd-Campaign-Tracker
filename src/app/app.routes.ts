@@ -19,6 +19,7 @@ export const routes: Routes = [
   { path: 'campagna/:id', component: CampagnaDetailComponent },
   { path: 'personaggi/:campagnaId', component: PersonaggioListComponent },
   { path: 'personaggi/nuovo/:campagnaId', component: PersonaggioFormComponent },
+  { path: 'personaggi/modifica/:id', component: PersonaggioFormComponent },
   { path: 'aggiornamenti/:campagnaId', component: AggiornamentoListComponent },
   { path: 'aggiornamenti/nuovo/:campagnaId', component: AggiornamentoFormComponent },
   { path: '**', redirectTo: '' } // fallback

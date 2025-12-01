@@ -24,4 +24,19 @@ export class PersonaggiService {
   addPersonaggio(p: Omit<Personaggio, 'id'>): Observable<Personaggio> {
     return this.http.post<Personaggio>(this.API_URL, p);
   }
+
+  // Ottieni singolo personaggio
+  getById(id: number): Observable<Personaggio> {
+    return this.http.get<Personaggio>(`${this.API_URL}/${id}`);
+  }
+
+  // Modifica personaggio esistente
+  updatePersonaggio(id: number, p: Partial<Personaggio>): Observable<Personaggio> {
+    return this.http.put<Personaggio>(`${this.API_URL}/${id}`, p);
+  }
+
+  // Elimina personaggio
+  deletePersonaggio(id: number): Observable<any> {
+    return this.http.delete(`${this.API_URL}/${id}`);
+  }
 }

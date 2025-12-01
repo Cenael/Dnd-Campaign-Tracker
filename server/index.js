@@ -13,7 +13,8 @@ const PORT = 3000;
 
 // Middleware
 app.use(cors()); // Permette richieste da Angular (localhost:4200)
-app.use(express.json()); // Parse JSON body
+app.use(express.json({ limit: '50mb' })); // Parse JSON body con limite aumentato per avatar
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Routes
 app.use('/api/campagne', campagneRoutes);
