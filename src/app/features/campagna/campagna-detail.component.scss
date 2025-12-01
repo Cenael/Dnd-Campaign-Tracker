@@ -114,6 +114,27 @@
         background: rgba(231, 76, 60, 0.1);
       }
     }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      color: white;
+      border: none;
+      padding: 14px 30px;
+      font-size: 16px;
+      min-width: 250px;
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c9a961" stroke-width="2"><path d="M10 2L2 7l8 5 8-5-8-5z"/><path d="M2 17l8 5 8-5M2 12l8 5 8-5"/></svg>') 10 10, pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(231, 76, 60, 0.4);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
   }
 
   .links-section {

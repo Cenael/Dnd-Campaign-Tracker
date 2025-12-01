@@ -40,6 +40,12 @@
             </button>
           }
         }
+
+        @if (isGM()) {
+          <button class="btn-danger" (click)="deleteCampagna()">
+            🗑️ Elimina Campagna
+          </button>
+        }
       </div>
 
       <div class="links-section">

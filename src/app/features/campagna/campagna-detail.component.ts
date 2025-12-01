@@ -70,6 +70,39 @@ export class CampagnaDetailComponent {
     }
   }
 
+  deleteCampagna() {
+    if (!this.isGM()) {
+      alert('Solo il Game Master può eliminare la campagna');
+      return;
+    }
+
+    const confirmed = confirm(
+      `Sei sicuro di voler eliminare la campagna "${this.campagna()?.nome}"?\n\n` +
+      'Verranno eliminati anche tutti i personaggi e gli aggiornamenti associati. ' +
+      'Questa azione è irreversibile!'
+    );
+
+    if (confirmed) {
+      const gmId = this.user()?.id;
+      if (gmId && this.campagna()) {
+        this.cs.deleteCampagna(this.campagnaId, gmId).subscribe({
+          next: () => {
+            alert('Campagna eliminata con successo');
+            this.router.navigate(['/campagne']);
+          },
+          error: (err) => {
+            if (err.status === 403) {
+              alert('Non hai i permessi per eliminare questa campagna');
+            } else {
+              alert('Errore durante l\'eliminazione della campagna');
+            }
+            console.error('Errore delete campagna:', err);
+          }
+        });
+      }
+    }
+  }
+
   goBack() {
     this.location.back();
   }
