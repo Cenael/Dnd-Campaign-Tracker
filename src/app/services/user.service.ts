@@ -22,7 +22,6 @@ export class UserService {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
 
-  // Stato globale con signal
   currentUser = signal<User | null>(this.loadFromStorage());
 
   constructor(private http: HttpClient) {}
@@ -33,12 +32,10 @@ export class UserService {
     return data ? JSON.parse(data) : null;
   }
 
-  // Verifica se nome utente esiste già
   checkUsername(nome: string): Observable<{ exists: boolean }> {
     return this.http.get<{ exists: boolean }>(`${this.API_URL}/check/${nome}`);
   }
 
-  // Login o registrazione utente
   loginOrRegister(nome: string, ruolo: Role): Observable<User> {
     return this.http.post<User>(`${this.API_URL}/login`, { nome, ruolo }).pipe(
       tap((user) => {
@@ -50,7 +47,6 @@ export class UserService {
     );
   }
 
-  // Login locale (fallback se backend non disponibile)
   loginLocal(user: User) {
     this.currentUser.set(user);
     if (this.isBrowser) {

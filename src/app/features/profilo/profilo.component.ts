@@ -14,7 +14,11 @@ import { Campagna } from '../../models/campagna';
         <div class="avatar">{{ getInitials() }}</div>
         <div class="user-info">
           <h1>{{ user()?.nome }}</h1>
-          <span class="role-badge" [class.gm-badge]="user()?.ruolo === 'GM'" [class.player-badge]="user()?.ruolo === 'Giocatore'">
+          <span
+            class="role-badge"
+            [class.gm-badge]="user()?.ruolo === 'GM'"
+            [class.player-badge]="user()?.ruolo === 'Giocatore'"
+          >
             {{ user()?.ruolo }}
           </span>
         </div>
@@ -30,61 +34,55 @@ import { Campagna } from '../../models/campagna';
       </div>
 
       @if (user()?.ruolo === 'GM') {
-        <div class="campaigns-section">
-          <h2>🎲 Le Mie Campagne (Game Master)</h2>
-          @if (getCreatedCampagnes().length === 0) {
-            <div class="empty-state">
-              <p>Non hai ancora creato campagne.</p>
-              <a [routerLink]="['/nuova']">
-                <button class="btn-primary">Crea la tua prima campagna</button>
-              </a>
+      <div class="campaigns-section">
+        <h2>🎲 Le Mie Campagne (Game Master)</h2>
+        @if (getCreatedCampagnes().length === 0) {
+        <div class="empty-state">
+          <p>Non hai ancora creato campagne.</p>
+          <a [routerLink]="['/nuova']">
+            <button class="btn-primary">Crea la tua prima campagna</button>
+          </a>
+        </div>
+        } @else {
+        <div class="campaigns-grid">
+          @for (campagna of getCreatedCampagnes(); track campagna.id) {
+          <div class="campaign-card">
+            <h3>{{ campagna.nome }}</h3>
+            <p class="description">{{ campagna.descrizione }}</p>
+            <div class="campaign-meta">
+              <span class="badge">👥 {{ campagna.giocatori.length }} giocatori</span>
             </div>
-          } @else {
-            <div class="campaigns-grid">
-              @for (campagna of getCreatedCampagnes(); track campagna.id) {
-                <div class="campaign-card">
-                  <h3>{{ campagna.nome }}</h3>
-                  <p class="description">{{ campagna.descrizione }}</p>
-                  <div class="campaign-meta">
-                    <span class="badge">👥 {{ campagna.giocatori.length }} giocatori</span>
-                  </div>
-                  <a [routerLink]="['/campagna', campagna.id]" class="view-link">
-                    Vai alla campagna →
-                  </a>
-                </div>
-              }
-            </div>
+            <a [routerLink]="['/campagna', campagna.id]" class="view-link"> Vai alla campagna → </a>
+          </div>
           }
         </div>
-      }
-
-      @if (user()?.ruolo === 'Giocatore') {
-        <div class="campaigns-section">
-          <h2>⚔️ Campagne a cui Partecipo</h2>
-          @if (getJoinedCampagnes().length === 0) {
-            <div class="empty-state">
-              <p>Non ti sei ancora unito a nessuna campagna.</p>
-              <a [routerLink]="['/campagne']">
-                <button class="btn-primary">Esplora le campagne disponibili</button>
-              </a>
+        }
+      </div>
+      } @if (user()?.ruolo === 'Giocatore') {
+      <div class="campaigns-section">
+        <h2>⚔️ Campagne a cui Partecipo</h2>
+        @if (getJoinedCampagnes().length === 0) {
+        <div class="empty-state">
+          <p>Non ti sei ancora unito a nessuna campagna.</p>
+          <a [routerLink]="['/campagne']">
+            <button class="btn-primary">Esplora le campagne disponibili</button>
+          </a>
+        </div>
+        } @else {
+        <div class="campaigns-grid">
+          @for (campagna of getJoinedCampagnes(); track campagna.id) {
+          <div class="campaign-card">
+            <h3>{{ campagna.nome }}</h3>
+            <p class="description">{{ campagna.descrizione }}</p>
+            <div class="campaign-meta">
+              <span class="badge">👥 {{ campagna.giocatori.length }} giocatori</span>
             </div>
-          } @else {
-            <div class="campaigns-grid">
-              @for (campagna of getJoinedCampagnes(); track campagna.id) {
-                <div class="campaign-card">
-                  <h3>{{ campagna.nome }}</h3>
-                  <p class="description">{{ campagna.descrizione }}</p>
-                  <div class="campaign-meta">
-                    <span class="badge">👥 {{ campagna.giocatori.length }} giocatori</span>
-                  </div>
-                  <a [routerLink]="['/campagna', campagna.id]" class="view-link">
-                    Vai alla campagna →
-                  </a>
-                </div>
-              }
-            </div>
+            <a [routerLink]="['/campagna', campagna.id]" class="view-link"> Vai alla campagna → </a>
+          </div>
           }
         </div>
+        }
+      </div>
       }
 
       <div class="actions">
@@ -94,7 +92,7 @@ import { Campagna } from '../../models/campagna';
       </div>
     </div>
   `,
-  styleUrls: ['./profilo.component.scss']
+  styleUrls: ['./profilo.component.scss'],
 })
 export class ProfiloComponent {
   user: Signal<User | null>;
@@ -107,14 +105,12 @@ export class ProfiloComponent {
   ) {
     this.user = this.userService.currentUser;
 
-    // Redirect al login se non autenticato
     if (!this.user()) {
       this.router.navigate(['/login']);
       return;
     }
 
-    // Carica le campagne
-    this.campagneService.campagne$.subscribe(campagne => {
+    this.campagneService.campagne$.subscribe((campagne) => {
       this.campagne.set(campagne);
     });
   }
@@ -127,18 +123,18 @@ export class ProfiloComponent {
   getCreatedCampagnes(): Campagna[] {
     const userId = this.user()?.id;
     if (!userId) return [];
-    return this.campagne().filter(c => c.gmId === userId);
+    return this.campagne().filter((c) => c.gmId === userId);
   }
 
   getJoinedCampagnes(): Campagna[] {
     const userId = this.user()?.id;
     if (!userId) return [];
-    return this.campagne().filter(c => c.giocatori.includes(userId));
+    return this.campagne().filter((c) => c.giocatori.includes(userId));
   }
 
   getMyCampagnesCount(): number {
-    return this.user()?.ruolo === 'GM' 
-      ? this.getCreatedCampagnes().length 
+    return this.user()?.ruolo === 'GM'
+      ? this.getCreatedCampagnes().length
       : this.getJoinedCampagnes().length;
   }
 }

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, map } from 'rxjs';
 
-// Interfacce API D&D 5e
 export interface DndClass {
   index: string;
   name: string;
@@ -79,74 +78,64 @@ export interface DndAlignment {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DndApiService {
   private readonly API_BASE = 'https://www.dnd5eapi.co/api';
 
   constructor(private http: HttpClient) {}
 
-  // Ottieni tutte le classi
   getClasses(): Observable<DndClass[]> {
     return this.http.get<{ count: number; results: any[] }>(`${this.API_BASE}/classes`).pipe(
-      map(response => response.results),
-      map(classes => classes.map(c => ({ ...c, index: c.index, name: c.name })))
+      map((response) => response.results),
+      map((classes) => classes.map((c) => ({ ...c, index: c.index, name: c.name })))
     );
   }
 
-  // Ottieni dettaglio classe
   getClassDetails(classIndex: string): Observable<DndClass> {
     return this.http.get<DndClass>(`${this.API_BASE}/classes/${classIndex}`);
   }
 
-  // Ottieni tutte le razze
   getRaces(): Observable<DndRace[]> {
-    return this.http.get<{ count: number; results: any[] }>(`${this.API_BASE}/races`).pipe(
-      map(response => response.results)
-    );
+    return this.http
+      .get<{ count: number; results: any[] }>(`${this.API_BASE}/races`)
+      .pipe(map((response) => response.results));
   }
 
-  // Ottieni dettaglio razza
   getRaceDetails(raceIndex: string): Observable<DndRace> {
     return this.http.get<DndRace>(`${this.API_BASE}/races/${raceIndex}`);
   }
 
-  // Ottieni tutte le abilità
   getSkills(): Observable<DndSkill[]> {
-    return this.http.get<{ count: number; results: any[] }>(`${this.API_BASE}/skills`).pipe(
-      map(response => response.results)
-    );
+    return this.http
+      .get<{ count: number; results: any[] }>(`${this.API_BASE}/skills`)
+      .pipe(map((response) => response.results));
   }
 
-  // Ottieni caratteristiche (Strength, Dex, etc.)
   getAbilityScores(): Observable<DndAbilityScore[]> {
-    return this.http.get<{ count: number; results: any[] }>(`${this.API_BASE}/ability-scores`).pipe(
-      map(response => response.results)
-    );
+    return this.http
+      .get<{ count: number; results: any[] }>(`${this.API_BASE}/ability-scores`)
+      .pipe(map((response) => response.results));
   }
 
-  // Ottieni equipaggiamento base
   getStartingEquipment(): Observable<DndEquipment[]> {
-    return this.http.get<{ count: number; results: any[] }>(`${this.API_BASE}/equipment`).pipe(
-      map(response => response.results.slice(0, 50)) // Limita per performance
-    );
+    return this.http
+      .get<{ count: number; results: any[] }>(`${this.API_BASE}/equipment`)
+      .pipe(map((response) => response.results.slice(0, 50)));
   }
 
-  // Ottieni lingue
   getLanguages(): Observable<DndLanguage[]> {
-    return this.http.get<{ count: number; results: any[] }>(`${this.API_BASE}/languages`).pipe(
-      map(response => response.results)
-    );
+    return this.http
+      .get<{ count: number; results: any[] }>(`${this.API_BASE}/languages`)
+      .pipe(map((response) => response.results));
   }
 
-  // Ottieni allineamenti
   getAlignments(): Observable<DndAlignment[]> {
-    return this.http.get<{ count: number; results: any[] }>(`${this.API_BASE}/alignments`).pipe(
-      map(response => response.results)
-    );
+    return this.http
+      .get<{ count: number; results: any[] }>(`${this.API_BASE}/alignments`)
+      .pipe(map((response) => response.results));
   }
 
-  // Carica tutti i dati necessari per il form in una volta
   getCharacterCreationData(): Observable<{
     classes: DndClass[];
     races: DndRace[];
@@ -159,29 +148,26 @@ export class DndApiService {
       races: this.getRaces(),
       skills: this.getSkills(),
       languages: this.getLanguages(),
-      alignments: this.getAlignments()
+      alignments: this.getAlignments(),
     });
   }
 
-  // Calcola modificatore da punteggio abilità
   calculateModifier(score: number): number {
     return Math.floor((score - 10) / 2);
   }
 
-  // Genera punteggi casuali (4d6 drop lowest)
   rollAbilityScore(): number {
     const rolls = [
       Math.floor(Math.random() * 6) + 1,
       Math.floor(Math.random() * 6) + 1,
       Math.floor(Math.random() * 6) + 1,
-      Math.floor(Math.random() * 6) + 1
+      Math.floor(Math.random() * 6) + 1,
     ];
     rolls.sort((a, b) => a - b);
-    rolls.shift(); // Rimuovi il più basso
+    rolls.shift();
     return rolls.reduce((sum, val) => sum + val, 0);
   }
 
-  // Genera set completo di punteggi
   generateAbilityScores(): { [key: string]: number } {
     return {
       strength: this.rollAbilityScore(),
@@ -189,11 +175,10 @@ export class DndApiService {
       constitution: this.rollAbilityScore(),
       intelligence: this.rollAbilityScore(),
       wisdom: this.rollAbilityScore(),
-      charisma: this.rollAbilityScore()
+      charisma: this.rollAbilityScore(),
     };
   }
 
-  // Calcola HP iniziali basati su classe e costituzione
   calculateInitialHP(hitDie: number, constitutionModifier: number): number {
     return hitDie + constitutionModifier;
   }

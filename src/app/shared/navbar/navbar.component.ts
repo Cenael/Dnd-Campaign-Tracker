@@ -9,25 +9,20 @@ import { filter } from 'rxjs/operators';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
   user;
   showBackButton = true;
 
-  constructor(
-    private userService: UserService,
-    private router: Router,
-    public location: Location
-  ) {
+  constructor(private userService: UserService, private router: Router, public location: Location) {
     this.user = this.userService.currentUser;
-    
-    // Hide back button on home and login pages
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.showBackButton = event.url !== '/' && event.url !== '/login';
-    });
+
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.showBackButton = event.url !== '/' && event.url !== '/login';
+      });
   }
 
   logout() {

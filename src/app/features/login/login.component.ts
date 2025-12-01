@@ -12,35 +12,32 @@ import { CommonModule } from '@angular/common';
     <div class="login-container">
       <h2>Benvenuto</h2>
       <p class="welcome-text">Accedi per gestire le tue avventure</p>
-      
+
       @if (errorMessage()) {
-        <div class="error-message">
-          {{ errorMessage() }}
-        </div>
+      <div class="error-message">
+        {{ errorMessage() }}
+      </div>
+      } @if (successMessage()) {
+      <div class="success-message">
+        {{ successMessage() }}
+      </div>
       }
 
-      @if (successMessage()) {
-        <div class="success-message">
-          {{ successMessage() }}
-        </div>
-      }
-      
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <label>
           Nome Avventuriero
-          <input 
-            type="text" 
-            formControlName="nome" 
+          <input
+            type="text"
+            formControlName="nome"
             placeholder="Inserisci il tuo nome"
-            (blur)="onNomeBlur()" />
+            (blur)="onNomeBlur()"
+          />
           @if (usernameStatus() === 'checking') {
-            <span class="checking">Controllo disponibilità...</span>
-          }
-          @if (usernameStatus() === 'exists') {
-            <span class="info-message">✓ Nome esistente - verrà effettuato il login</span>
-          }
-          @if (usernameStatus() === 'available') {
-            <span class="info-message">✓ Nome disponibile - verrà creato un nuovo account</span>
+          <span class="checking">Controllo disponibilità...</span>
+          } @if (usernameStatus() === 'exists') {
+          <span class="info-message">✓ Nome esistente - verrà effettuato il login</span>
+          } @if (usernameStatus() === 'available') {
+          <span class="info-message">✓ Nome disponibile - verrà creato un nuovo account</span>
           }
         </label>
 
@@ -52,19 +49,13 @@ import { CommonModule } from '@angular/common';
           </select>
         </label>
 
-        <button 
-          type="submit" 
-          [disabled]="loginForm.invalid || isLoading()">
-          @if (isLoading()) {
-            Caricamento...
-          } @else {
-            Inizia l'Avventura
-          }
+        <button type="submit" [disabled]="loginForm.invalid || isLoading()">
+          @if (isLoading()) { Caricamento... } @else { Inizia l'Avventura }
         </button>
       </form>
     </div>
   `,
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   loginForm;
@@ -76,7 +67,7 @@ export class LoginComponent {
   constructor(private fb: FormBuilder, private us: UserService, private router: Router) {
     this.loginForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
-      ruolo: ['Giocatore', Validators.required]
+      ruolo: ['Giocatore', Validators.required],
     });
   }
 
@@ -91,7 +82,7 @@ export class LoginComponent {
         error: (err) => {
           console.error('Errore controllo username:', err);
           this.usernameStatus.set('idle');
-        }
+        },
       });
     }
   }
@@ -116,17 +107,16 @@ export class LoginComponent {
         },
         error: (err) => {
           this.isLoading.set(false);
-          
+
           if (err.status === 409) {
-            // Utente esiste con ruolo diverso
             this.errorMessage.set(
               `Il nome "${nome}" è già registrato come ${err.error.existingRole}. ` +
-              `Per favore scegli un altro nome o seleziona il ruolo corretto.`
+                `Per favore scegli un altro nome o seleziona il ruolo corretto.`
             );
           } else {
             this.errorMessage.set('Errore durante il login. Riprova.');
           }
-        }
+        },
       });
     }
   }

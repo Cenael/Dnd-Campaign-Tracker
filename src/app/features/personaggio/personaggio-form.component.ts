@@ -5,7 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location, CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { Personaggio, AbilityScores } from '../../models/personaggio';
-import { DndApiService, DndClass, DndRace, DndLanguage, DndAlignment } from '../../services/dnd-api.service';
+import {
+  DndApiService,
+  DndClass,
+  DndRace,
+  DndLanguage,
+  DndAlignment,
+} from '../../services/dnd-api.service';
 
 @Component({
   selector: 'app-personaggio-form',
@@ -16,140 +22,146 @@ import { DndApiService, DndClass, DndRace, DndLanguage, DndAlignment } from '../
       <h2>{{ isEditMode ? '✏️ Modifica Personaggio' : '🗡️ Creazione Personaggio D&D 5e' }}</h2>
 
       @if (loading()) {
-        <p class="loading">⏳ Caricamento dati ufficiali D&D 5e...</p>
-      }
-
-      @if (!loading()) {
-        <form [formGroup]="personaggioForm" (ngSubmit)="onSubmit()">
-
-          <div class="avatar-section">
-            <div class="avatar-preview">
-              @if (avatarPreview()) {
-                <img [src]="avatarPreview()" alt="Avatar" />
-              } @else {
-                <div class="avatar-placeholder">
-                  <span>👤</span>
-                  <p>nessun ritratto</p>
-                </div>
-              }
+      <p class="loading">⏳ Caricamento dati ufficiali D&D 5e...</p>
+      } @if (!loading()) {
+      <form [formGroup]="personaggioForm" (ngSubmit)="onSubmit()">
+        <div class="avatar-section">
+          <div class="avatar-preview">
+            @if (avatarPreview()) {
+            <img [src]="avatarPreview()" alt="Avatar" />
+            } @else {
+            <div class="avatar-placeholder">
+              <span>👤</span>
+              <p>nessun ritratto</p>
             </div>
-            <div class="avatar-upload">
-              <label class="upload-label">
-                <input type="file" accept="image/*" (change)="onAvatarSelect($event)" hidden />
-                <span>📜 carica ritratto</span>
-              </label>
-              @if (avatarPreview()) {
-                <button type="button" class="btn-remove-avatar" (click)="removeAvatar()">✕ rimuovi</button>
-              }
-            </div>
-          </div>
-
-          <label>
-            Nome del Personaggio
-            <input type="text" formControlName="nome" placeholder="Es: Thorin Manto di Quercia" />
-          </label>
-          @if (personaggioForm.controls.nome.invalid && personaggioForm.controls.nome.touched) {
-            <p class="error">Il nome è obbligatorio</p>
-          }
-
-          <div class="form-row">
-            <label>
-              Razza Ufficiale D&D
-              <select formControlName="razza" (change)="onRaceChange($event)">
-                <option value="">-- Seleziona Razza --</option>
-                @for (race of races(); track race.index) {
-                  <option [value]="race.name">{{race.name}}</option>
-                }
-              </select>
-            </label>
-            <label>
-              Classe Ufficiale D&D
-              <select formControlName="classe" (change)="onClassChange($event)">
-                <option value="">-- Seleziona Classe --</option>
-                @for (cls of classes(); track cls.index) {
-                  <option [value]="cls.name">{{cls.name}}</option>
-                }
-              </select>
-            </label>
-          </div>
-          @if (personaggioForm.controls.razza.invalid && personaggioForm.controls.razza.touched) {
-            <p class="error">La razza è obbligatoria</p>
-          }
-          @if (personaggioForm.controls.classe.invalid && personaggioForm.controls.classe.touched) {
-            <p class="error">La classe è obbligatoria</p>
-          }
-
-          <label>
-            Livello
-            <input type="number" formControlName="livello" min="1" max="20" />
-          </label>
-          @if (personaggioForm.controls.livello.invalid && personaggioForm.controls.livello.touched) {
-            <p class="error">Il livello è obbligatorio (1-20)</p>
-          }
-
-          <h3>📊 Punteggi Caratteristica</h3>
-          <button type="button" class="btn-roll" (click)="rollAllAbilities()">🎲 Tira tutti i punteggi (4d6 drop lowest)</button>
-          
-          <div class="abilities-grid">
-            @for (ability of abilityNames; track ability) {
-              <div class="ability-box">
-                <label>{{ability | uppercase}}</label>
-                <input type="number" [formControlName]="ability" min="1" max="20" />
-                <span class="modifier">{{getModifier(ability)}}</span>
-              </div>
             }
           </div>
-
-          <div class="form-row">
-            <label>
-              Allineamento
-              <select formControlName="allineamento">
-                <option value="">-- Seleziona --</option>
-                @for (align of alignments(); track align.index) {
-                  <option [value]="align.name">{{align.name}}</option>
-                }
-              </select>
+          <div class="avatar-upload">
+            <label class="upload-label">
+              <input type="file" accept="image/*" (change)="onAvatarSelect($event)" hidden />
+              <span>📜 carica ritratto</span>
             </label>
-            <label>
-              Background
-              <input type="text" formControlName="background" placeholder="Es: Soldato, Saggio..." />
-            </label>
+            @if (avatarPreview()) {
+            <button type="button" class="btn-remove-avatar" (click)="removeAvatar()">
+              ✕ rimuovi
+            </button>
+            }
           </div>
+        </div>
 
+        <label>
+          Nome del Personaggio
+          <input type="text" formControlName="nome" placeholder="Es: Thorin Manto di Quercia" />
+        </label>
+        @if (personaggioForm.controls.nome.invalid && personaggioForm.controls.nome.touched) {
+        <p class="error">Il nome è obbligatorio</p>
+        }
+
+        <div class="form-row">
           <label>
-            Linguaggi (separati da virgola)
-            <input type="text" formControlName="linguaggi" placeholder="Es: Comune, Elfico, Nanico" />
+            Razza Ufficiale D&D
+            <select formControlName="razza" (change)="onRaceChange($event)">
+              <option value="">-- Seleziona Razza --</option>
+              @for (race of races(); track race.index) {
+              <option [value]="race.name">{{ race.name }}</option>
+              }
+            </select>
           </label>
-
           <label>
-            Note / Tratti aggiuntivi
-            <textarea formControlName="note" rows="3" placeholder="Tratti, ideali, legami, difetti..."></textarea>
+            Classe Ufficiale D&D
+            <select formControlName="classe" (change)="onClassChange($event)">
+              <option value="">-- Seleziona Classe --</option>
+              @for (cls of classes(); track cls.index) {
+              <option [value]="cls.name">{{ cls.name }}</option>
+              }
+            </select>
           </label>
+        </div>
+        @if (personaggioForm.controls.razza.invalid && personaggioForm.controls.razza.touched) {
+        <p class="error">La razza è obbligatoria</p>
+        } @if (personaggioForm.controls.classe.invalid && personaggioForm.controls.classe.touched) {
+        <p class="error">La classe è obbligatoria</p>
+        }
 
-          <div class="calculated-stats">
-            <div class="stat-card">
-              <strong>HP Max</strong>
-              <span>{{calculatedHP()}}</span>
-            </div>
-            <div class="stat-card">
-              <strong>Classe Armatura</strong>
-              <span>{{calculatedAC()}}</span>
-            </div>
-            <div class="stat-card">
-              <strong>Iniziativa</strong>
-              <span>{{calculatedInitiative()}}</span>
-            </div>
-          </div>
+        <label>
+          Livello
+          <input type="number" formControlName="livello" min="1" max="20" />
+        </label>
+        @if (personaggioForm.controls.livello.invalid && personaggioForm.controls.livello.touched) {
+        <p class="error">Il livello è obbligatorio (1-20)</p>
+        }
 
-          <div class="form-actions">
-            <button type="button" class="btn-cancel" (click)="goBack()">Annulla</button>
-            <button type="submit" [disabled]="personaggioForm.invalid || loading()">{{ isEditMode ? 'Salva Modifiche' : 'Crea Personaggio' }}</button>
+        <h3>📊 Punteggi Caratteristica</h3>
+        <button type="button" class="btn-roll" (click)="rollAllAbilities()">
+          🎲 Tira tutti i punteggi (4d6 drop lowest)
+        </button>
+
+        <div class="abilities-grid">
+          @for (ability of abilityNames; track ability) {
+          <div class="ability-box">
+            <label>{{ ability | uppercase }}</label>
+            <input type="number" [formControlName]="ability" min="1" max="20" />
+            <span class="modifier">{{ getModifier(ability) }}</span>
           </div>
-        </form>
+          }
+        </div>
+
+        <div class="form-row">
+          <label>
+            Allineamento
+            <select formControlName="allineamento">
+              <option value="">-- Seleziona --</option>
+              @for (align of alignments(); track align.index) {
+              <option [value]="align.name">{{ align.name }}</option>
+              }
+            </select>
+          </label>
+          <label>
+            Background
+            <input type="text" formControlName="background" placeholder="Es: Soldato, Saggio..." />
+          </label>
+        </div>
+
+        <label>
+          Linguaggi (separati da virgola)
+          <input type="text" formControlName="linguaggi" placeholder="Es: Comune, Elfico, Nanico" />
+        </label>
+
+        <label>
+          Note / Tratti aggiuntivi
+          <textarea
+            formControlName="note"
+            rows="3"
+            placeholder="Tratti, ideali, legami, difetti..."
+          ></textarea>
+        </label>
+
+        <div class="calculated-stats">
+          <div class="stat-card">
+            <strong>HP Max</strong>
+            <span>{{ calculatedHP() }}</span>
+          </div>
+          <div class="stat-card">
+            <strong>Classe Armatura</strong>
+            <span>{{ calculatedAC() }}</span>
+          </div>
+          <div class="stat-card">
+            <strong>Iniziativa</strong>
+            <span>{{ calculatedInitiative() }}</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="goBack()">Annulla</button>
+          <button type="submit" [disabled]="personaggioForm.invalid || loading()">
+            {{ isEditMode ? 'Salva Modifiche' : 'Crea Personaggio' }}
+          </button>
+        </div>
+      </form>
       }
     </div>
   `,
-  styleUrls: ['./personaggio-form.component.scss']
+  styleUrls: ['./personaggio-form.component.scss'],
 })
 export class PersonaggioFormComponent implements OnInit {
   personaggioForm;
@@ -157,7 +169,6 @@ export class PersonaggioFormComponent implements OnInit {
   personaggioId: number | null = null;
   isEditMode = false;
 
-  // Signals per dati D&D API
   loading = signal(true);
   classes = signal<DndClass[]>([]);
   races = signal<DndRace[]>([]);
@@ -181,11 +192,11 @@ export class PersonaggioFormComponent implements OnInit {
   ) {
     const campagnaIdParam = this.route.snapshot.paramMap.get('campagnaId');
     const personaggioIdParam = this.route.snapshot.paramMap.get('id');
-    
+
     this.campagnaId = campagnaIdParam ? Number(campagnaIdParam) : 0;
     this.personaggioId = personaggioIdParam ? Number(personaggioIdParam) : null;
     this.isEditMode = !!this.personaggioId;
-    
+
     this.personaggioForm = this.fb.group({
       nome: ['', Validators.required],
       classe: ['', Validators.required],
@@ -200,7 +211,7 @@ export class PersonaggioFormComponent implements OnInit {
       allineamento: [''],
       background: [''],
       linguaggi: ['Comune'],
-      note: ['']
+      note: [''],
     });
   }
 
@@ -212,7 +223,7 @@ export class PersonaggioFormComponent implements OnInit {
         this.races.set(data.races);
         this.alignments.set(data.alignments);
         this.loading.set(false);
-        
+
         // Se in modalità modifica, carica i dati del personaggio
         if (this.isEditMode && this.personaggioId) {
           this.loadPersonaggioData();
@@ -221,7 +232,7 @@ export class PersonaggioFormComponent implements OnInit {
       error: (err) => {
         console.error('Errore caricamento dati D&D:', err);
         this.loading.set(false);
-      }
+      },
     });
   }
 
@@ -244,49 +255,49 @@ export class PersonaggioFormComponent implements OnInit {
           allineamento: personaggio.allineamento || '',
           background: personaggio.background || '',
           linguaggi: Array.isArray(personaggio.linguaggi) ? personaggio.linguaggi.join(', ') : '',
-          note: personaggio.note || ''
+          note: personaggio.note || '',
         });
-        
+
         if (personaggio.avatar) {
           this.avatarPreview.set(personaggio.avatar);
           this.avatarBase64.set(personaggio.avatar);
         }
-        
+
         // Imposta la classe e razza selezionate
-        const selectedClass = this.classes().find(c => c.name === personaggio.classe);
-        const selectedRace = this.races().find(r => r.name === personaggio.razza);
+        const selectedClass = this.classes().find((c) => c.name === personaggio.classe);
+        const selectedRace = this.races().find((r) => r.name === personaggio.razza);
         if (selectedClass) this.selectedClass.set(selectedClass);
         if (selectedRace) this.selectedRace.set(selectedRace);
-        
+
         this.loading.set(false);
       },
       error: (err) => {
         console.error('Errore caricamento personaggio:', err);
         this.loading.set(false);
-      }
+      },
     });
   }
 
   onClassChange(event: Event) {
     const className = (event.target as HTMLSelectElement).value;
-    const cls = this.classes().find(c => c.name === className);
+    const cls = this.classes().find((c) => c.name === className);
     if (cls) {
       this.selectedClass.set(cls);
       this.dndApi.getClassDetails(cls.index).subscribe({
         next: (details) => this.selectedClass.set(details),
-        error: (err) => console.error('Errore dettagli classe:', err)
+        error: (err) => console.error('Errore dettagli classe:', err),
       });
     }
   }
 
   onRaceChange(event: Event) {
     const raceName = (event.target as HTMLSelectElement).value;
-    const race = this.races().find(r => r.name === raceName);
+    const race = this.races().find((r) => r.name === raceName);
     if (race) {
       this.selectedRace.set(race);
       this.dndApi.getRaceDetails(race.index).subscribe({
         next: (details) => this.selectedRace.set(details),
-        error: (err) => console.error('Errore dettagli razza:', err)
+        error: (err) => console.error('Errore dettagli razza:', err),
       });
     }
   }
@@ -304,7 +315,9 @@ export class PersonaggioFormComponent implements OnInit {
 
   calculatedHP(): number {
     const cls = this.selectedClass();
-    const conMod = this.dndApi.calculateModifier(this.personaggioForm.get('constitution')?.value || 10);
+    const conMod = this.dndApi.calculateModifier(
+      this.personaggioForm.get('constitution')?.value || 10
+    );
     if (cls) {
       return this.dndApi.calculateInitialHP(cls.hit_die, conMod);
     }
@@ -312,7 +325,9 @@ export class PersonaggioFormComponent implements OnInit {
   }
 
   calculatedAC(): number {
-    const dexMod = this.dndApi.calculateModifier(this.personaggioForm.get('dexterity')?.value || 10);
+    const dexMod = this.dndApi.calculateModifier(
+      this.personaggioForm.get('dexterity')?.value || 10
+    );
     return 10 + dexMod; // AC base senza armatura
   }
 
@@ -342,14 +357,14 @@ export class PersonaggioFormComponent implements OnInit {
     if (this.personaggioForm.valid) {
       const formValue = this.personaggioForm.value;
       const currentUser = this.userService.currentUser();
-      
+
       const abilityScores: AbilityScores = {
         strength: formValue.strength!,
         dexterity: formValue.dexterity!,
         constitution: formValue.constitution!,
         intelligence: formValue.intelligence!,
         wisdom: formValue.wisdom!,
-        charisma: formValue.charisma!
+        charisma: formValue.charisma!,
       };
 
       const personaggioData: Omit<Personaggio, 'id'> = {
@@ -365,25 +380,25 @@ export class PersonaggioFormComponent implements OnInit {
         classeArmatura: this.calculatedAC(),
         iniziativa: this.calculatedInitiative(),
         velocita: this.selectedRace()?.speed || 30,
-        linguaggi: formValue.linguaggi?.split(',').map(l => l.trim()) || ['Comune'],
+        linguaggi: formValue.linguaggi?.split(',').map((l) => l.trim()) || ['Comune'],
         background: formValue.background || undefined,
         allineamento: formValue.allineamento || undefined,
         esperienza: 0,
         note: formValue.note || undefined,
-        avatar: this.avatarBase64() || undefined
+        avatar: this.avatarBase64() || undefined,
       };
-      
+
       if (this.isEditMode && this.personaggioId) {
         // Modalità modifica
         this.ps.updatePersonaggio(this.personaggioId, personaggioData).subscribe({
           next: () => this.router.navigate(['/personaggi', this.campagnaId]),
-          error: (err) => console.error('Errore modifica personaggio:', err)
+          error: (err) => console.error('Errore modifica personaggio:', err),
         });
       } else {
         // Modalità creazione
         this.ps.addPersonaggio(personaggioData).subscribe({
           next: () => this.router.navigate(['/personaggi', this.campagnaId]),
-          error: (err) => console.error('Errore salvataggio personaggio:', err)
+          error: (err) => console.error('Errore salvataggio personaggio:', err),
         });
       }
     }

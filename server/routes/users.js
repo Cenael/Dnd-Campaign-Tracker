@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../database');
 
-// GET - Ottieni tutti gli utenti
 router.get('/', (req, res) => {
   db.all('SELECT * FROM users', [], (err, rows) => {
     if (err) {
@@ -13,7 +12,6 @@ router.get('/', (req, res) => {
   });
 });
 
-// GET - Verifica se nome utente esiste
 router.get('/check/:nome', (req, res) => {
   const { nome } = req.params;
   db.get('SELECT id FROM users WHERE nome = ?', [nome], (err, row) => {
@@ -25,7 +23,6 @@ router.get('/check/:nome', (req, res) => {
   });
 });
 
-// POST - Login/Registrazione utente
 router.post('/login', (req, res) => {
   const { nome, ruolo } = req.body;
 
@@ -34,7 +31,6 @@ router.post('/login', (req, res) => {
     return;
   }
 
-  // Verifica se l'utente esiste già
   db.get('SELECT * FROM users WHERE nome = ?', [nome], (err, existingUser) => {
     if (err) {
       res.status(500).json({ error: err.message });
@@ -42,39 +38,31 @@ router.post('/login', (req, res) => {
     }
 
     if (existingUser) {
-      // Utente già registrato - verifica ruolo
       if (existingUser.ruolo !== ruolo) {
-        res.status(409).json({ 
+        res.status(409).json({
           error: 'Utente già esistente con ruolo diverso',
-          existingRole: existingUser.ruolo 
+          existingRole: existingUser.ruolo,
         });
         return;
       }
-      // Login con utente esistente
       res.json(existingUser);
     } else {
-      // Registra nuovo utente
-      db.run(
-        'INSERT INTO users (nome, ruolo) VALUES (?, ?)',
-        [nome, ruolo],
-        function(err) {
-          if (err) {
-            res.status(500).json({ error: err.message });
-            return;
-          }
-          const newUser = {
-            id: this.lastID,
-            nome,
-            ruolo
-          };
-          res.status(201).json(newUser);
+      db.run('INSERT INTO users (nome, ruolo) VALUES (?, ?)', [nome, ruolo], function (err) {
+        if (err) {
+          res.status(500).json({ error: err.message });
+          return;
         }
-      );
+        const newUser = {
+          id: this.lastID,
+          nome,
+          ruolo,
+        };
+        res.status(201).json(newUser);
+      });
     }
   });
 });
 
-// GET - Ottieni utente per ID
 router.get('/:id', (req, res) => {
   const { id } = req.params;
   db.get('SELECT * FROM users WHERE id = ?', [id], (err, row) => {

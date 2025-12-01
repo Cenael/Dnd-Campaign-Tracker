@@ -45,7 +45,3 @@ Thumbs.db
 # Database
 server/*.db
 server/*.db-journal
-
-# Environment variables
-.env
-.env.local

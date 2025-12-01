@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './campagna-detail.component.html',
-  styleUrls: ['./campagna-detail.component.scss']
+  styleUrls: ['./campagna-detail.component.scss'],
 })
 export class CampagnaDetailComponent {
   campagna = signal<Campagna | undefined>(undefined);
@@ -28,7 +28,6 @@ export class CampagnaDetailComponent {
     this.campagnaId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadCampagna();
 
-    // Subscribe to updates
     this.cs.campagne$.subscribe(() => {
       this.loadCampagna();
     });
@@ -37,7 +36,7 @@ export class CampagnaDetailComponent {
   loadCampagna() {
     this.cs.getCampagnaById(this.campagnaId).subscribe({
       next: (c) => this.campagna.set(c),
-      error: (err) => console.error('Errore caricamento campagna:', err)
+      error: (err) => console.error('Errore caricamento campagna:', err),
     });
   }
 
@@ -55,7 +54,7 @@ export class CampagnaDetailComponent {
     if (currentUserId && this.campagna()) {
       this.cs.joinCampagna(this.campagnaId, currentUserId).subscribe({
         next: () => this.loadCampagna(),
-        error: (err) => console.error('Errore join campagna:', err)
+        error: (err) => console.error('Errore join campagna:', err),
       });
     }
   }
@@ -65,7 +64,7 @@ export class CampagnaDetailComponent {
     if (currentUserId && this.campagna()) {
       this.cs.leaveCampagna(this.campagnaId, currentUserId).subscribe({
         next: () => this.loadCampagna(),
-        error: (err) => console.error('Errore leave campagna:', err)
+        error: (err) => console.error('Errore leave campagna:', err),
       });
     }
   }
@@ -78,8 +77,8 @@ export class CampagnaDetailComponent {
 
     const confirmed = confirm(
       `Sei sicuro di voler eliminare la campagna "${this.campagna()?.nome}"?\n\n` +
-      'Verranno eliminati anche tutti i personaggi e gli aggiornamenti associati. ' +
-      'Questa azione è irreversibile!'
+        'Verranno eliminati anche tutti i personaggi e gli aggiornamenti associati. ' +
+        'Questa azione è irreversibile!'
     );
 
     if (confirmed) {
@@ -94,10 +93,10 @@ export class CampagnaDetailComponent {
             if (err.status === 403) {
               alert('Non hai i permessi per eliminare questa campagna');
             } else {
-              alert('Errore durante l\'eliminazione della campagna');
+              alert("Errore durante l'eliminazione della campagna");
             }
             console.error('Errore delete campagna:', err);
-          }
+          },
         });
       }
     }
