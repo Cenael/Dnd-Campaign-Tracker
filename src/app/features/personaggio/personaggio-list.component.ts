@@ -69,7 +69,13 @@ import { Personaggio } from '../../models/personaggio';
             </div>
           }
 
-          <a [routerLink]="['/aggiornamenti', p.campagnaId]">📜 Vedi Aggiornamenti</a>
+          <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+            <a [routerLink]="['/personaggi/modifica', p.id]">✏️ Modifica</a>
+            <a [routerLink]="['/aggiornamenti', p.campagnaId]">📜 Aggiornamenti</a>
+            @if (p.id) {
+              <button class="btn-delete" (click)="deletePersonaggio(p.id, p.nome)">🗑️ Elimina</button>
+            }
+          </div>
         </div>
       }
 
@@ -125,5 +131,17 @@ export class PersonaggioListComponent {
   formatModifier(value: number | undefined): string {
     if (value === undefined) return '+0';
     return value >= 0 ? `+${value}` : `${value}`;
+  }
+
+  deletePersonaggio(id: number, nome: string) {
+    if (confirm(`Sei sicuro di voler eliminare il personaggio "${nome}"? Questa azione è irreversibile.`)) {
+      this.ps.deletePersonaggio(id).subscribe({
+        next: () => {
+          console.log('Personaggio eliminato con successo');
+          this.loadPersonaggi();
+        },
+        error: (err) => console.error('Errore eliminazione personaggio:', err)
+      });
+    }
   }
 }

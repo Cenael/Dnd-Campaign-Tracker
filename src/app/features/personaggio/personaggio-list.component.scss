@@ -10,13 +10,7 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   }
 
-  .empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: #a8a8a8;
-    font-style: italic;
-    font-size: 18px;
-  }
+  .empty-state { text-align: center; padding: 60px 20px; color: #a8a8a8; font-style: italic; font-size: 18px; }
 
   .card {
     background: #1e2438;
@@ -44,18 +38,11 @@
           height: 80px;
           flex-shrink: 0;
           border: 3px solid #cd7f32;
-          box-shadow: 
-            -4px 4px 8px rgba(0, 0, 0, 0.6),
-            inset 2px 2px 4px rgba(0, 0, 0, 0.3);
+          box-shadow: -4px 4px 8px rgba(0, 0, 0, 0.6), inset 2px 2px 4px rgba(0, 0, 0, 0.3);
           clip-path: polygon(0 0, 92% 0, 100% 12%, 100% 100%, 12% 100%, 0 88%);
           overflow: hidden;
 
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: sepia(0.15) contrast(1.1);
-          }
+          img { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.15) contrast(1.1); }
         }
 
         .character-title {
@@ -103,21 +90,9 @@
           justify-content: space-between;
           padding: 6px 0;
           border-bottom: 1px solid rgba(201, 169, 97, 0.1);
-
-          &:last-child {
-            border-bottom: none;
-          }
-
-          .label {
-            color: #a68747;
-            font-weight: 600;
-            font-size: 13px;
-          }
-
-          .value {
-            color: #f1f1f1;
-            font-size: 14px;
-          }
+          &:last-child { border-bottom: none; }
+          .label { color: #a68747; font-weight: 600; font-size: 13px; }
+          .value { color: #f1f1f1; font-size: 14px; }
         }
       }
 
@@ -136,19 +111,8 @@
           border: 1px solid rgba(201, 169, 97, 0.3);
           border-radius: 6px;
 
-          .stat-label {
-            font-size: 11px;
-            color: #a68747;
-            text-transform: uppercase;
-            font-weight: bold;
-            margin-bottom: 4px;
-          }
-
-          .stat-value {
-            font-size: 16px;
-            color: #f1f1f1;
-            font-weight: bold;
-          }
+          .stat-label { font-size: 11px; color: #a68747; text-transform: uppercase; font-weight: bold; margin-bottom: 4px; }
+          .stat-value { font-size: 16px; color: #f1f1f1; font-weight: bold; }
         }
       }
     }
@@ -163,11 +127,20 @@
       font-size: 14px;
       font-weight: 500;
       display: inline-block;
+      &:hover { background: rgba(201, 169, 97, 0.2); border-color: #c9a961; }
+    }
 
-      &:hover {
-        background: rgba(201, 169, 97, 0.2);
-        border-color: #c9a961;
-      }
+    .btn-delete {
+      color: #e74c3c;
+      background: transparent;
+      padding: 8px 14px;
+      border: 1px solid rgba(231, 76, 60, 0.5);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      &:hover { background: rgba(231, 76, 60, 0.2); border-color: #e74c3c; }
     }
   }
 
@@ -176,24 +149,13 @@
     gap: 15px;
     justify-content: center;
     margin-top: 30px;
-
-    a {
-      text-decoration: none;
-    }
-
-    button {
-      padding: 12px 30px;
-      font-size: 16px;
-    }
-
+    a { text-decoration: none; }
+    button { padding: 12px 30px; font-size: 16px; }
     .btn-secondary {
       background: transparent;
       border: 1px solid #c9a961;
       color: #c9a961;
-
-      &:hover {
-        background: rgba(201, 169, 97, 0.1);
-      }
+      &:hover { background: rgba(201, 169, 97, 0.1); }
     }
   }
 }

@@ -72,6 +72,17 @@ db.serialize(() => {
     )
   `);
 
+  // Aggiungi colonna avatar se non esiste (migrazione)
+  db.run(`
+    ALTER TABLE personaggi ADD COLUMN avatar TEXT
+  `, (err) => {
+    if (err && !err.message.includes('duplicate column name')) {
+      console.error('Errore aggiunta colonna avatar:', err);
+    } else if (!err) {
+      console.log('✅ Colonna avatar aggiunta alla tabella personaggi');
+    }
+  });
+
   // Dati iniziali di esempio
   db.get('SELECT COUNT(*) as count FROM campagne', [], (err, row) => {
     if (!err && row.count === 0) {
