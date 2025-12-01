@@ -6,18 +6,21 @@ const db = require('./database');
 const campagneRoutes = require('./routes/campagne');
 const personaggiRoutes = require('./routes/personaggi');
 const aggiornamentiRoutes = require('./routes/aggiornamenti');
+const usersRoutes = require('./routes/users');
 
 const app = express();
 const PORT = 3000;
 
 // Middleware
 app.use(cors()); // Permette richieste da Angular (localhost:4200)
-app.use(express.json()); // Parse JSON body
+app.use(express.json({ limit: '50mb' })); // Parse JSON body con limite aumentato per avatar
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Routes
 app.use('/api/campagne', campagneRoutes);
 app.use('/api/personaggi', personaggiRoutes);
 app.use('/api/aggiornamenti', aggiornamentiRoutes);
+app.use('/api/users', usersRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -38,6 +41,8 @@ app.listen(PORT, () => {
   console.log(`   POST   /api/personaggi`);
   console.log(`   GET    /api/aggiornamenti?campagnaId=X`);
   console.log(`   POST   /api/aggiornamenti`);
+  console.log(`   POST   /api/users/login`);
+  console.log(`   GET    /api/users/check/:nome`);
 });
 
 // Gestione chiusura database

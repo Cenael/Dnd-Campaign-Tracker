@@ -18,14 +18,64 @@ import { Personaggio } from '../../models/personaggio';
       }
 
       @for (p of personaggi(); track p.id) {
-        <div class="card">
-          <h3>{{ p.nome }}</h3>
-          <div class="character-info">
-            <span class="stat">Classe: {{ p.classe }}</span>
-            <span class="stat">Razza: {{ p.razza }}</span>
-            <span class="stat">Livello: {{ p.livello }}</span>
+        <div class="card character-card">
+          <div class="character-header">
+            @if (p.avatar) {
+              <div class="character-avatar">
+                <img [src]="p.avatar" [alt]="p.nome" />
+              </div>
+            }
+            <div class="character-title">
+              <h3>{{ p.nome }}</h3>
+              <span class="level-badge">Liv. {{ p.livello }}</span>
+            </div>
           </div>
-          <a [routerLink]="['/aggiornamenti', p.campagnaId]">📜 Vedi Aggiornamenti</a>
+          
+          <div class="character-info">
+            <div class="info-row">
+              <span class="label">Classe:</span>
+              <span class="value">{{ p.classe }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Razza:</span>
+              <span class="value">{{ p.razza }}</span>
+            </div>
+            @if (p.background) {
+              <div class="info-row">
+                <span class="label">Background:</span>
+                <span class="value">{{ p.background }}</span>
+              </div>
+            }
+          </div>
+
+          @if (p.abilityScores) {
+            <div class="stats-row">
+              <div class="stat-mini">
+                <span class="stat-label">HP</span>
+                <span class="stat-value">{{ p.puntiFerita }}/{{ p.puntiFeritaMax }}</span>
+              </div>
+              <div class="stat-mini">
+                <span class="stat-label">AC</span>
+                <span class="stat-value">{{ p.classeArmatura }}</span>
+              </div>
+              <div class="stat-mini">
+                <span class="stat-label">Init</span>
+                <span class="stat-value">{{ formatModifier(p.iniziativa) }}</span>
+              </div>
+              <div class="stat-mini">
+                <span class="stat-label">Speed</span>
+                <span class="stat-value">{{ p.velocita }}ft</span>
+              </div>
+            </div>
+          }
+
+          <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+            <a [routerLink]="['/personaggi/modifica', p.id]">✏️ Modifica</a>
+            <a [routerLink]="['/aggiornamenti', p.campagnaId]">📜 Aggiornamenti</a>
+            @if (p.id) {
+              <button class="btn-delete" (click)="deletePersonaggio(p.id, p.nome)">🗑️ Elimina</button>
+            }
+          </div>
         </div>
       }
 
@@ -76,5 +126,22 @@ export class PersonaggioListComponent {
     // Il Giocatore può aggiungere solo se partecipa alla campagna
     const campagna = this.campagneService.getCampagnaByIdSync(this.campagnaId);
     return campagna ? campagna.giocatori.includes(currentUser.id) : false;
+  }
+
+  formatModifier(value: number | undefined): string {
+    if (value === undefined) return '+0';
+    return value >= 0 ? `+${value}` : `${value}`;
+  }
+
+  deletePersonaggio(id: number, nome: string) {
+    if (confirm(`Sei sicuro di voler eliminare il personaggio "${nome}"? Questa azione è irreversibile.`)) {
+      this.ps.deletePersonaggio(id).subscribe({
+        next: () => {
+          console.log('Personaggio eliminato con successo');
+          this.loadPersonaggi();
+        },
+        error: (err) => console.error('Errore eliminazione personaggio:', err)
+      });
+    }
   }
 }

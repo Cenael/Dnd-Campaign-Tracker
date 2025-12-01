@@ -18,6 +18,7 @@
     font-size: 80px;
     margin-bottom: 20px;
     animation: float 3s ease-in-out infinite;
+  
   }
 
   h1 {
@@ -28,9 +29,11 @@
     background-clip: text;
     margin-bottom: 15px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    -webkit-text-stroke: 1px rgba(99, 50, 18, 0.733);
   }
 
   .subtitle {
+
     font-size: 20px;
     color: #a8a8a8;
     font-style: italic;

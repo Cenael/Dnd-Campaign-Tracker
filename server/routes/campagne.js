@@ -128,4 +128,50 @@ router.post('/:id/leave', (req, res) => {
   });
 });
 
+// DELETE - Elimina campagna (solo GM che l'ha creata)
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  const { gmId } = req.body;
+
+  if (!gmId) {
+    res.status(400).json({ error: 'gmId è obbligatorio' });
+    return;
+  }
+
+  // Verifica che la campagna esista e che il richiedente sia il GM
+  db.get('SELECT gmId FROM campagne WHERE id = ?', [id], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (!row) {
+      res.status(404).json({ error: 'Campagna non trovata' });
+      return;
+    }
+    if (row.gmId !== gmId) {
+      res.status(403).json({ error: 'Solo il Game Master che ha creato la campagna può eliminarla' });
+      return;
+    }
+
+    // Elimina la campagna
+    db.run('DELETE FROM campagne WHERE id = ?', [id], (err) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      
+      // Elimina anche personaggi e aggiornamenti associati (cascade)
+      db.run('DELETE FROM personaggi WHERE campagnaId = ?', [id], (err) => {
+        if (err) console.error('Errore eliminazione personaggi:', err);
+      });
+      
+      db.run('DELETE FROM aggiornamenti WHERE campagnaId = ?', [id], (err) => {
+        if (err) console.error('Errore eliminazione aggiornamenti:', err);
+      });
+
+      res.json({ success: true, message: 'Campagna eliminata con successo' });
+    });
+  });
+});
+
 module.exports = router;

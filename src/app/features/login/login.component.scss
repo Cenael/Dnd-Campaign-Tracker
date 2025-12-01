@@ -21,6 +21,43 @@
     font-size: 16px;
   }
 
+  .error-message {
+    background: rgba(220, 53, 69, 0.2);
+    border: 1px solid #dc3545;
+    color: #ff6b6b;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .success-message {
+    background: rgba(40, 167, 69, 0.2);
+    border: 1px solid #28a745;
+    color: #51cf66;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .info-message {
+    color: #c9a961;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+  }
+
+  .checking {
+    color: #a8a8a8;
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 5px;
+    display: block;
+  }
+
   form {
     label {
       display: flex;
