@@ -459,65 +459,9 @@ BehaviorSubject mantiene stato in memoria
 
 ## Slide 16: Testing (Potenziale)
 
-### Strategie di Test
-
-#### Unit Testing
-Test di singoli componenti e servizi isolati
-```typescript
-describe('CampagneService', () => {
-  it('should add campagna', () => {
-    const service = new CampagneService();
-    service.addCampagna(mockCampagna);
-    expect(service.campagne().length).toBe(1);
-  });
-});
-```
-
-#### Integration Testing
-Test di interazione tra componenti
-
-#### E2E Testing
-Test dell'intera applicazione (Cypress, Playwright)
-
-### Tools
-- **Jasmine** - Framework di testing
-- **Karma** - Test runner
-- **Cypress** - E2E testing
-
----
 
 ## Slide 17: Deployment e Scalabilità
 
-### Deployment Possibile
-
-#### Frontend (Angular)
-- **Build Production:** `ng build --configuration production`
-- **Output:** Static files (HTML, CSS, JS)
-- **Hosting:** Vercel, Netlify, GitHub Pages, Firebase Hosting
-
-#### Backend (Node.js)
-- **Hosting:** Heroku, Railway, AWS EC2, DigitalOcean
-- **Database:** SQLite locale o migrazione a PostgreSQL/MySQL
-
-### Scalabilità Futura
-
-#### Backend Scaling
-- Migrazione da SQLite a PostgreSQL/MongoDB
-- Load balancing con multiple istanze
-- Caching con Redis
-
-#### Frontend Scaling
-- CDN per static assets
-- Service Workers per PWA
-- Server-Side Rendering (SSR) già supportato
-
-#### Features Future
-- WebSocket per real-time updates
-- File upload per immagini personaggi
-- Sistema di notifiche push
-- Integrazione dadi virtuali
-
----
 
 ## Slide 18: Struttura del Codice
 
@@ -581,67 +525,11 @@ ng build             # Build production
 ng build --watch     # Build con auto-reload
 ```
 
-#### Testing
-```bash
-ng test              # Unit tests
-ng e2e               # E2E tests
-```
-
 ### Tools Utilizzati
 - **VS Code** - IDE principale
 - **Git** - Version control
 - **GitHub Copilot** - AI assistance
 - **Chrome DevTools** - Debug e profiling
-
----
-
-## Slide 20: Lezioni Apprese
-
-### Successi ✅
-- **Angular 19 Signals** - Reattività semplificata e performante
-- **Standalone Components** - Architettura più pulita
-- **SQLite** - Setup database veloce e semplice
-- **TypeScript** - Type safety ha prevenuto molti bug
-- **RxJS** - Gestione asincrona elegante
-
-### Sfide Affrontate 🛠️
-- **SSR Compatibility** - localStorage non disponibile nel server
-  - *Soluzione:* Platform checks con `isPlatformBrowser`
-- **JSON Storage in SQLite** - Array di giocatori
-  - *Soluzione:* JSON.parse/stringify
-- **CORS Issues** - Comunicazione frontend/backend
-  - *Soluzione:* Middleware CORS configurato
-
-### Best Practices Apprese 📚
-- Separazione concerns (UI/Logic/Data)
-- Single Responsibility Principle
-- DRY (Don't Repeat Yourself)
-- Meaningful variable names
-- Error handling strutturato
-
----
-
-## Slide 21: Statistiche Progetto
-
-### Metriche Codice
-- **File Totali:** ~30 file TypeScript/JavaScript
-- **Componenti Angular:** 12 componenti
-- **Servizi:** 4 servizi principali
-- **Routes:** 10+ percorsi configurati
-- **Linee di Codice:** ~2000+ LOC
-
-### Tecnologie Utilizzate
-- **Linguaggi:** TypeScript, JavaScript, HTML, SCSS, SQL
-- **Framework:** Angular 19, Express.js
-- **Database:** SQLite3
-- **Libraries:** RxJS, Node.js
-
-### Time Breakdown
-- **Architettura:** 15%
-- **Frontend Development:** 40%
-- **Backend Development:** 25%
-- **Styling:** 10%
-- **Testing & Debug:** 10%
 
 ---
 
@@ -675,30 +563,6 @@ ng e2e               # E2E tests
 
 ---
 
-## Slide 23: Roadmap Futura
-
-### Short Term (1-3 mesi)
-- ✨ Sistema di notifiche in-app
-- 🎲 Dice roller integrato
-- 📊 Dashboard statistiche campagna
-- 🖼️ Upload immagini per personaggi
-- 🔍 Ricerca e filtri avanzati
-
-### Medium Term (3-6 mesi)
-- 💬 Chat in tempo reale (WebSocket)
-- 📱 Progressive Web App (PWA)
-- 🌐 Internazionalizzazione (i18n)
-- 👥 Sistema di permessi granulari
-- 📈 Analytics e report
-
-### Long Term (6-12 mesi)
-- 🤖 AI per generazione contenuti
-- 🗺️ Mappe interattive
-- 🎵 Sound effects e musica
-- 📚 Integrazione con D&D Beyond
-- 🌍 Community e social features
-
----
 
 ## Slide 24: Conclusioni
 
@@ -725,65 +589,3 @@ ng e2e               # E2E tests
 - Esperienza full-stack completa
 
 ---
-
-## Slide 25: Q&A e Contatti
-
-### Domande?
-
-**Argomenti Disponibili per Approfondimento:**
-- Dettagli implementazione tecnica
-- Scelte architetturali
-- Challenges e soluzioni
-- Performance ottimizzazioni
-- Future features
-
-### Risorse Progetto
-
-- **Repository:** github.com/Cenael/Dnd-Campaign-Tracker
-- **Documentazione:** README.md, STUDIO_TECNOLOGIE.md
-- **Demo Live:** [URL se deployato]
-
-### Contatti
-
-- **GitHub:** @Cenael
-- **Branch Principale:** main
-- **Branch Backend:** backend/nodejs
-
----
-
-## 🎲 Grazie per l'attenzione!
-
-**"L'avventura è appena iniziata..."**
-
----
-
-## Note per il Presentatore
-
-### Tips per Slide Efficaci
-1. **Usa immagini** - Screenshot dell'app, diagrammi colorati
-2. **Demo live** - Mostra l'app funzionante
-3. **Code snippets** - Evidenzia codice chiave con syntax highlighting
-4. **Animazioni** - Fai apparire bullet point uno alla volta
-5. **Tempo** - Max 2-3 minuti per slide
-
-### Backup Slides (se necessario)
-- Dettagli tecnici specifici di Angular/Node.js
-- Confronto con alternative (React, Vue, Django)
-- Deep dive su pattern specifici
-- Troubleshooting e debugging process
-
-### Domande Frequenti Prevedibili
-1. **Perché Angular invece di React?**
-   - Framework completo, type-safe, enterprise-ready
-   
-2. **Perché SQLite invece di PostgreSQL?**
-   - Semplicità setup, embedded, perfetto per MVP
-   
-3. **Come gestirete molti utenti concorrenti?**
-   - Migrazione a DB più robusto, load balancing
-   
-4. **È production-ready?**
-   - MVP funzionante, necessita security hardening e scaling
-
-5. **Quanto tempo ci è voluto?**
-   - [Inserisci tempo reale: es. 2-3 settimane]
